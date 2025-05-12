@@ -1,26 +1,32 @@
-import { protocol } from "electron";
+import { app, protocol } from "electron";
 import Fastify, { type FastifyInstance } from "fastify";
 // 扩展类型添加bootstrap方法
 // 服务器启动选项接口
 export interface BootstrapOptions {
-  app?: FastifyInstance;
+  server?: FastifyInstance;
+}
+declare module "fastify" {
+  interface FastifyInstance {
+    bootstrap(name: string): Promise<void>;
+  }
 }
 
 // 创建服务器函数
-export async function createServer(options: BootstrapOptions) {
+export function createServer(options: BootstrapOptions) {
   // 获取传入的express实例，如果没有则创建一个新的
-  const app =
-    options.app ||
+  const server =
+    options.server ||
     Fastify({
       logger: true,
     });
 
   // 为express实例添加bootstrap方法
-  (app as any).bootstrap = (name: string = "app") => {
-    // 注册私有协议，这里以传入的name作为协议名
+  server.bootstrap = async (scheme: string = "app") => {
+    await app.whenReady(); // 注册私有协议，这里以传入的name作为协议名
+    console.log(`bootstrap protocol ${scheme}`);
     protocol.registerSchemesAsPrivileged([
       {
-        scheme: name,
+        scheme: scheme,
         privileges: {
           bypassCSP: true, // 绕过内容安全策略
           standard: true, // 标准协议
@@ -31,9 +37,9 @@ export async function createServer(options: BootstrapOptions) {
     ]);
 
     // 处理私有协议的请求
-    protocol.handle(name, async (request: Request) => {
+    protocol.handle(scheme, async (request: Request) => {
       // 将请求的URL从私有协议格式转换为普通路径格式
-      let url = request.url.replace(`${name}://`, "/");
+      let url = request.url.replace(`${scheme}://`, "/");
       if (url.endsWith("/")) {
         url = url.slice(0, -1);
       }
@@ -46,7 +52,7 @@ export async function createServer(options: BootstrapOptions) {
       };
       console.log(options);
 
-      const response = await app.inject(options);
+      const response = await server.inject(options);
 
       // 返回响应
       return new Response(response.body, {
