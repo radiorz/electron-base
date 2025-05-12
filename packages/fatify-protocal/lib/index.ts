@@ -55,6 +55,6 @@ export async function createServer(options: BootstrapOptions) {
     });
   };
 
-  // 返回express实例
+  // 返回 fastify 实例
   return app;
 }
