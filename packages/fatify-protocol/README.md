@@ -14,3 +14,11 @@ server.get("/", () => "helloworld");
 server.get("/hello", () => "helloworld");
 createServer({ server }).bootstrap("app");
 ```
+
+## 前端获取
+
+```javascript
+// 像正常的html请求一样。
+const res = await fetch("app:///hello");
+console.log(await res.text());
+```
