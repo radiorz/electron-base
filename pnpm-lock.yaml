@@ -15,7 +15,7 @@ importers:
         specifier: ^1.13.2
         version: 1.13.4
 
-  packages/express-protocol:
+  packages/express-protocal:
     dependencies:
       electron:
         specifier: 36.2.0
@@ -64,7 +64,7 @@ importers:
 
   projects/electron-project:
     dependencies:
-      '@tikkhun/fastify-protocol':
+      '@electron/fastify-protocol':
         specifier: workspace:*
         version: link:../../packages/fatify-protocol
       electron-squirrel-startup:

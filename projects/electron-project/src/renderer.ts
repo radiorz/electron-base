@@ -26,6 +26,14 @@
  * ```
  */
 
-import './index.css';
+import "./index.css";
 
-console.log('👋 This message is being logged by "renderer.ts", included via Vite');
+console.log(
+  '👋 This message is being logged by "renderer.ts", included via Vite'
+);
+
+async function bootstrap() {
+  const result = await fetch("app://hello");
+  console.log(`result`, await result.text());
+}
+bootstrap();
