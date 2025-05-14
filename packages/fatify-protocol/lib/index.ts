@@ -22,8 +22,9 @@ export function createServer(options: BootstrapOptions) {
 
   // 为express实例添加bootstrap方法
   server.bootstrap = async (scheme: string = "app") => {
+    console.log(`start bootstrap protocol ${scheme},waiting app ready`);
     await app.whenReady(); // 注册私有协议，这里以传入的name作为协议名
-    console.log(`bootstrap protocol ${scheme}`);
+    console.log(`start bootstrap protocol ${scheme}`);
     protocol.registerSchemesAsPrivileged([
       {
         scheme: scheme,

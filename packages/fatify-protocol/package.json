@@ -1,5 +1,5 @@
 {
-  "name": "@tikkhun/fastify-protocal",
+  "name": "@electron/fastify-protocol",
   "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
