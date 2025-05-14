@@ -19,6 +19,6 @@ createServer({ server }).bootstrap("app");
 
 ```javascript
 // 像正常的html请求一样。
-const res = await fetch("app:///hello");
+const res = await fetch("app://hello");
 console.log(await res.text());
 ```
